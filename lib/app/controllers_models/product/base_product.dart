@@ -1,13 +1,13 @@
-import 'package:Shop/category/base_category.dart';
-import 'package:Shop/discount/base_discount.dart';
-import 'package:Shop/image/base_image.dart';
-import 'package:Shop/product_option/base_product_option.dart';
-import 'package:Shop/tag/base_tag.dart';
-import 'package:Shop/image/image_controller.dart';
-import 'package:Shop/product_option/product_option_controller.dart';
-import 'package:Shop/category/category_controller.dart';
-import 'package:Shop/tag/tag_controller.dart';
-import 'package:Shop/discount/discount_controller.dart';
+import 'package:Shop/app/controllers_models/category/base_category.dart';
+import 'package:Shop/app/controllers_models/discount/base_discount.dart';
+import 'package:Shop/app/controllers_models/image/base_image.dart';
+import 'package:Shop/app/controllers_models/product_option/base_product_option.dart';
+import 'package:Shop/app/controllers_models/tag/base_tag.dart';
+import 'package:Shop/app/controllers_models/image/image_controller.dart';
+import 'package:Shop/app/controllers_models/product_option/product_option_controller.dart';
+import 'package:Shop/app/controllers_models/category/category_controller.dart';
+import 'package:Shop/app/controllers_models/tag/tag_controller.dart';
+import 'package:Shop/app/controllers_models/discount/discount_controller.dart';
 
  class BaseProduct {
   String id;

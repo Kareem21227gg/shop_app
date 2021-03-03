@@ -10,4 +10,5 @@ class FireBaseAuthintication {
 
     return user;
   }
+  
 }

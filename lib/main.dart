@@ -1,48 +1,29 @@
-
-import 'authentication/authentication_firebase.dart';
+import 'package:Shop/app/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'screens/onbording.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: AuthUi(),
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, AsyncSnapshot<FirebaseApp> snap) {
+        return MaterialApp(
+          color: MyColors.primaryColor,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              buttonColor: MyColors.primaryColor,
+              primaryColor: MyColors.primaryColor,
+              primarySwatch: Colors.orange),
+          home: Onbording(),
+        );
+      },
     );
   }
-}
-
-class AuthUi extends StatefulWidget {
-  @override
-  _AuthUiState createState() => _AuthUiState();
-}
-
-class _AuthUiState extends State<AuthUi> {
-  FireBaseAuthintication authintication = FireBaseAuthintication();
- 
-
- 
-  @override
-  Widget build(BuildContext context) {
-    return Text(';;');
-                    // onPressed: () async {
-                    //   print('i am here');
-                    //   var user = await authintication.regester(
-                    //       "kareem20001227@gmail.com", "(k:K)12345");
-                    //   print(user.toString());
-                    // },
-                 
-  }
-  
 }

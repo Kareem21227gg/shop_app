@@ -1,5 +1,5 @@
-import 'package:Shop/order/base_order.dart';
-import 'package:Shop/product/base_product.dart';
+import 'package:Shop/app/controllers_models/order/base_order.dart';
+import 'package:Shop/app/controllers_models/product/base_product.dart';
 import 'customer.dart';
 
 class CustomerController {

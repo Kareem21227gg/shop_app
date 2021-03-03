@@ -1,4 +1,4 @@
-import 'package:Shop/product/base_product.dart';
+import 'package:Shop/app/controllers_models/product/base_product.dart';
 
 class BaseCartItem {
 

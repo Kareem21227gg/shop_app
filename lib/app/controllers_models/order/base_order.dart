@@ -1,6 +1,6 @@
-import 'package:Shop/cart/base_cart.dart';
-import 'package:Shop/payment/baes_payment.dart';
-import 'package:Shop/user/customer.dart';
+import 'package:Shop/app/controllers_models/cart/base_cart.dart';
+import 'package:Shop/app/controllers_models/payment/baes_payment.dart';
+import 'package:Shop/app/controllers_models/user/customer.dart';
 
 class BaseOrder {
   BaseCart cart;

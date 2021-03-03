@@ -1,4 +1,4 @@
-import 'package:Shop/user/user.dart';
+import 'package:Shop/app/controllers_models/user/user.dart';
 
 class Authenticatable{
 

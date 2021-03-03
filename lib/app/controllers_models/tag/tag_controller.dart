@@ -1,4 +1,4 @@
-import 'package:Shop/category/base_category.dart';
+import 'package:Shop/app/controllers_models/category/base_category.dart';
 
 import 'base_tag.dart';
 
