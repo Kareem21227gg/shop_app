@@ -1,6 +1,6 @@
-abstract class User {
+abstract class MyUser {
   String id, firstName, lastName, email, phone, gender;
-  User(
+  MyUser(
     this.id,
     this.firstName,
     this.lastName,

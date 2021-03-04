@@ -1,7 +1,10 @@
-import 'package:Shop/app/my_colors.dart';
+
+import 'package:Shop/screens/regester.dart';
+import 'package:Shop/utillities/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:Shop/app/view/onboarding/controller.dart';
 import 'package:page_view_indicator/page_view_indicator.dart';
+
 // ignore: must_be_immutable
 class Onbording extends StatelessWidget {
   OnboardingController onboardingController = OnboardingController();
@@ -9,7 +12,6 @@ class Onbording extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Stack(
         children: [
           PageView.builder(
@@ -69,9 +71,9 @@ class Onbording extends StatelessWidget {
             },
           ),
           Align(
-            heightFactor: 27,
-            alignment: Alignment.bottomCenter,
-            child: indecator()),
+              heightFactor: 27,
+              alignment: Alignment.bottomCenter,
+              child: indecator()),
           Align(
             heightFactor: 14,
             alignment: Alignment.bottomCenter,
@@ -83,36 +85,45 @@ class Onbording extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "Get Started!",
-                      style: TextStyle(color: Colors.white, fontSize: 26,fontWeight: FontWeight.w300),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w300),
                     ),
                   )),
               onPressed: () {
                 valueNotifier.dispose();
+                onboardingController.getState();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Regester();
+                }));
               },
             ),
           ),
         ],
       ),
     );
+    
   }
-  Widget indecator(){
+
+  Widget indecator() {
     return PageViewIndicator(
-  pageIndexNotifier: valueNotifier,
-  length: onboardingController.modelList.length,
-  normalBuilder: (animationController, index) => Circle(
+      pageIndexNotifier: valueNotifier,
+      length: onboardingController.modelList.length,
+      normalBuilder: (animationController, index) => Circle(
         size: 6.0,
-        color:MyColors.hashText ,
+        color: MyColors.hashText,
       ),
-  highlightedBuilder: (animationController, index) => ScaleTransition(
+      highlightedBuilder: (animationController, index) => ScaleTransition(
         scale: CurvedAnimation(
           parent: animationController,
           curve: Curves.ease,
         ),
         child: Circle(
           size: 6.0,
-          color:MyColors.primaryColor,
+          color: MyColors.primaryColor,
         ),
       ),
-);
+    );
   }
 }

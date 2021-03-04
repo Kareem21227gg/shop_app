@@ -1,11 +1,11 @@
-import 'user.dart';
+import 'my_user.dart';
 import 'address.dart';
 import 'package:Shop/app/controllers_models/order/base_order.dart';
 import 'package:Shop/app/controllers_models/product/base_product.dart';
 import 'package:Shop/app/controllers_models/product/product_controller.dart';
 import 'package:Shop/app/controllers_models/order/order_controller.dart';
 
-class Customer extends User {
+class Customer extends MyUser {
   List<BaseOrder> orders;
   List<BaseProduct> products;
   Address shippingAddress;

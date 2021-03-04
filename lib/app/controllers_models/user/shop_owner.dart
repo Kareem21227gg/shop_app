@@ -1,6 +1,6 @@
-import 'user.dart';
+import 'my_user.dart';
 
-class ShopOwner extends User {
+class ShopOwner extends MyUser {
   ShopOwner(
       {String id,
       String firstName,
