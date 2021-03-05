@@ -35,11 +35,10 @@ class _SetUpState extends State<SetUp> {
               return Home();
             }
             else{
-            
               return  _screen;
             }
         },
-      ), // TODO:handel is already log in case
+      ), 
       // home:_screen,
     );
   }

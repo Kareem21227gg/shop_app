@@ -2,6 +2,7 @@ import 'package:Shop/app/controllers_models/authentication/firebase_authenticati
 import 'package:Shop/utillities/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:Shop/app/view/regester/controller.dart';
 
 class Regester extends StatefulWidget {
   @override
@@ -9,29 +10,17 @@ class Regester extends StatefulWidget {
 }
 
 class _RegesterState extends State<Regester> {
-
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  ValueNotifier _alreadyhaveaccountNotifier = ValueNotifier<bool>(false);
-  ValueNotifier _brogressNotifier = ValueNotifier<bool>(false);
-  ValueNotifier _emailerrorNotifire = ValueNotifier<String>(null);//sorry null safte !
-   ValueNotifier _passworderrorNotifire = ValueNotifier<String>(null);
-   
+  RegesterController regesterController = RegesterController();
   @override
   void dispose() {
-    _alreadyhaveaccountNotifier.dispose();
-    _passworderrorNotifire.dispose();
-    _emailerrorNotifire.dispose();
-    _brogressNotifier.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
+    regesterController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context , listen :false);
+        Provider.of<FirebaseAuthentication>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -51,20 +40,15 @@ class _RegesterState extends State<Regester> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       onChanged: (value) {
-                        if (value.isEmpty)
-                          _emailerrorNotifire.value = "email should not be null";
-                        else if (!value.endsWith(".com"))
-                          _emailerrorNotifire.value = "email format not correct";
-                        else
-                          _emailerrorNotifire.value = null;
+                        regesterController.emailFiled(value);
                       },
-                      controller: _emailController,
+                      controller: regesterController.emailController,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: MyColors.primaryColor,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "email",
-                        errorText: _emailerrorNotifire.value,
+                        errorText: regesterController.emailerrorNotifire.value,
                       ),
                     ),
                   ),
@@ -72,17 +56,14 @@ class _RegesterState extends State<Regester> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       onChanged: (value) {
-                        if (value.isEmpty || value.length < 6)
-                          _passworderrorNotifire.value = "you must type six characters in les";
-                        else {
-                          _passworderrorNotifire.value = null;
-                        }
+                        regesterController.passwordFiled(value);
                       },
-                      controller: _passwordController,
+                      controller: regesterController.passwordController,
                       obscureText: true,
                       cursorColor: MyColors.primaryColor,
                       decoration: InputDecoration(
-                        errorText: _passworderrorNotifire.value,
+                        errorText:
+                            regesterController.passworderrorNotifire.value,
                         border: OutlineInputBorder(),
                         labelText: "password",
                       ),
@@ -96,12 +77,10 @@ class _RegesterState extends State<Regester> {
                   child: InkWell(
                       splashColor: Colors.transparent,
                       onTap: () {
-                          _alreadyhaveaccountNotifier.value = !_alreadyhaveaccountNotifier.value;
+                        regesterController.onSingChange();
                       },
                       child: Text(
-                        _alreadyhaveaccountNotifier.value
-                            ? "new user?"
-                            : "already have an account?",
+                        regesterController.sizeBoxText(),
                         style: TextStyle(color: Colors.blue),
                       )),
                 ),
@@ -113,22 +92,9 @@ class _RegesterState extends State<Regester> {
                     child: Center(
                       child: _buttonChiled(),
                     )),
-                onPressed: () async {
-                  if (_passworderrorNotifire.value == null && _emailerrorNotifire.value == null) {
-                    if ( _alreadyhaveaccountNotifier.value) {
-                        _brogressNotifier.value = true;
-                      await fireBaseAuthentication.login(_emailController.text,
-                          _passwordController.text, context);
-                        _brogressNotifier.value = false;
-                    } else {
-                        _brogressNotifier.value = true;
-                      await fireBaseAuthentication.register(
-                          _emailController.text,
-                          _passwordController.text,
-                          context);
-                        _brogressNotifier.value = false;
-                    }
-                  }
+                onPressed: () {
+                  regesterController.buttonPressed(
+                      fireBaseAuthentication, context);
                 },
               ),
             ],
@@ -137,8 +103,9 @@ class _RegesterState extends State<Regester> {
       ),
     );
   }
-   Widget _buttonChiled() {
-    if (_brogressNotifier.value) {
+
+  Widget _buttonChiled() {
+    if (regesterController.brogressNotifier.value) {
       return Center(
         child: CircularProgressIndicator(
           backgroundColor: MyColors.primaryColor,
@@ -146,7 +113,9 @@ class _RegesterState extends State<Regester> {
       );
     }
     return Text(
-      _alreadyhaveaccountNotifier.value ? "Sing In!" : "Sing Up!",
+      regesterController.alreadyhaveaccountNotifier.value
+          ? "Sing In!"
+          : "Sing Up!",
       style: TextStyle(
           color: Colors.white, fontSize: 26, fontWeight: FontWeight.w300),
     );

@@ -38,7 +38,7 @@ class FirebaseAuthentication {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         _sankeMasseg(
-            context, "email is already in use try anther one or sing in!");
+            context, "email is already in use try another one or sing in!");
       }
       else {
         _sankeMasseg(context, "something wont work try to use VPN");
