@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:Shop/app/controllers_models/authentication/firebase_authentication.dart';
-import 'package:Shop/screens/home.dart';
 import 'package:Shop/utillities/my_colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,30 +9,20 @@ class Regester extends StatefulWidget {
 }
 
 class _RegesterState extends State<Regester> {
+
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  bool _alreadyhaveaccount = false; //to change the ui
-  bool _brogress = false;
-  Widget _buttonChiled() {
-    if (_brogress) {
-      return Center(
-        child: CircularProgressIndicator(
-          backgroundColor: MyColors.primaryColor,
-        ),
-      );
-    }
-    return Text(
-      _alreadyhaveaccount ? "Sing In!" : "Sing Up!",
-      style: TextStyle(
-          color: Colors.white, fontSize: 26, fontWeight: FontWeight.w300),
-    );
-  }
-
-  //sorre null safte
-  String passworderror = null;
-  String emailerror = null;
+  ValueNotifier _alreadyhaveaccountNotifier = ValueNotifier<bool>(false);
+  ValueNotifier _brogressNotifier = ValueNotifier<bool>(false);
+  ValueNotifier _emailerrorNotifire = ValueNotifier<String>(null);//sorry null safte !
+   ValueNotifier _passworderrorNotifire = ValueNotifier<String>(null);
+   
   @override
   void dispose() {
+    _alreadyhaveaccountNotifier.dispose();
+    _passworderrorNotifire.dispose();
+    _emailerrorNotifire.dispose();
+    _brogressNotifier.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -45,7 +31,7 @@ class _RegesterState extends State<Regester> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context);
+        Provider.of<FirebaseAuthentication>(context , listen :false);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -66,12 +52,11 @@ class _RegesterState extends State<Regester> {
                     child: TextField(
                       onChanged: (value) {
                         if (value.isEmpty)
-                          emailerror = "email should not be null";
+                          _emailerrorNotifire.value = "email should not be null";
                         else if (!value.endsWith(".com"))
-                          emailerror = "email format not correct";
+                          _emailerrorNotifire.value = "email format not correct";
                         else
-                          emailerror = null;
-                        setState(() {});
+                          _emailerrorNotifire.value = null;
                       },
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -79,7 +64,7 @@ class _RegesterState extends State<Regester> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "email",
-                        errorText: emailerror,
+                        errorText: _emailerrorNotifire.value,
                       ),
                     ),
                   ),
@@ -88,18 +73,16 @@ class _RegesterState extends State<Regester> {
                     child: TextField(
                       onChanged: (value) {
                         if (value.isEmpty || value.length < 6)
-                          passworderror = "you must type six characters in les";
+                          _passworderrorNotifire.value = "you must type six characters in les";
                         else {
-                          passworderror = null;
+                          _passworderrorNotifire.value = null;
                         }
-
-                        setState(() {});
                       },
                       controller: _passwordController,
                       obscureText: true,
                       cursorColor: MyColors.primaryColor,
                       decoration: InputDecoration(
-                        errorText: passworderror,
+                        errorText: _passworderrorNotifire.value,
                         border: OutlineInputBorder(),
                         labelText: "password",
                       ),
@@ -109,19 +92,19 @@ class _RegesterState extends State<Regester> {
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
-                child: InkWell(
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      setState(() {
-                        _alreadyhaveaccount = !_alreadyhaveaccount;
-                      });
-                    },
-                    child: Text(
-                      _alreadyhaveaccount
-                          ? "new user?"
-                          : "already have an account?",
-                      style: TextStyle(color: Colors.blue),
-                    )),
+                child: Center(
+                  child: InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () {
+                          _alreadyhaveaccountNotifier.value = !_alreadyhaveaccountNotifier.value;
+                      },
+                      child: Text(
+                        _alreadyhaveaccountNotifier.value
+                            ? "new user?"
+                            : "already have an account?",
+                        style: TextStyle(color: Colors.blue),
+                      )),
+                ),
               ),
               RaisedButton(
                 child: SizedBox(
@@ -131,27 +114,19 @@ class _RegesterState extends State<Regester> {
                       child: _buttonChiled(),
                     )),
                 onPressed: () async {
-                  if (passworderror == null && emailerror == null) {
-                    if (_alreadyhaveaccount) {
-                      setState(() {
-                        _brogress = true;
-                      });
+                  if (_passworderrorNotifire.value == null && _emailerrorNotifire.value == null) {
+                    if ( _alreadyhaveaccountNotifier.value) {
+                        _brogressNotifier.value = true;
                       await fireBaseAuthentication.login(_emailController.text,
                           _passwordController.text, context);
-                      setState(() {
-                        _brogress = false;
-                      });
+                        _brogressNotifier.value = false;
                     } else {
-                      setState(() {
-                        _brogress = true;
-                      });
+                        _brogressNotifier.value = true;
                       await fireBaseAuthentication.register(
                           _emailController.text,
                           _passwordController.text,
                           context);
-                      setState(() {
-                        _brogress = false;
-                      });
+                        _brogressNotifier.value = false;
                     }
                   }
                 },
@@ -160,6 +135,20 @@ class _RegesterState extends State<Regester> {
           ),
         ),
       ),
+    );
+  }
+   Widget _buttonChiled() {
+    if (_brogressNotifier.value) {
+      return Center(
+        child: CircularProgressIndicator(
+          backgroundColor: MyColors.primaryColor,
+        ),
+      );
+    }
+    return Text(
+      _alreadyhaveaccountNotifier.value ? "Sing In!" : "Sing Up!",
+      style: TextStyle(
+          color: Colors.white, fontSize: 26, fontWeight: FontWeight.w300),
     );
   }
 }

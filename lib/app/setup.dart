@@ -19,7 +19,7 @@ class _SetUpState extends State<SetUp> {
   @override
   Widget build(BuildContext context) {
      FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context);
+        Provider.of<FirebaseAuthentication>(context , listen :false);
     isNewUser();
     return MaterialApp(
       color: MyColors.primaryColor,
