@@ -85,7 +85,8 @@ class _RegesterState extends State<Regester> {
                       )),
                 ),
               ),
-              RaisedButton(
+              ElevatedButton(
+                style:ButtonStyle() ,
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.06,
                     width: MediaQuery.of(context).size.width * 0.8,

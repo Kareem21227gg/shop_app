@@ -66,7 +66,7 @@ class FirebaseAuthentication {
   }
 
   void _sankeMasseg(BuildContext context, String masseg) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(masseg),
     ));

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model.dart';
 
 class OnboardingController {
-  List<ModelOnboarding> modelList = List<ModelOnboarding>();
+  List<ModelOnboarding> modelList = [ModelOnboarding()];
   OnboardingController() {
     modelList.add(ModelOnboarding(
       imagePath: "lib/utillities/images/onboarding1.png",

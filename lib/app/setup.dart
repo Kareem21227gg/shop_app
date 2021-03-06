@@ -18,39 +18,44 @@ class _SetUpState extends State<SetUp> {
 
   @override
   Widget build(BuildContext context) {
-     FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context , listen :false);
+    FirebaseAuthentication fireBaseAuthentication =
+        Provider.of<FirebaseAuthentication>(context, listen: false);
     isNewUser();
     return MaterialApp(
       color: MyColors.primaryColor,
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
-          buttonColor: MyColors.primaryColor,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+            ),
+          ),
           primaryColor: MyColors.primaryColor,
           primarySwatch: Colors.orange),
       home: StreamBuilder<User>(
-        stream:fireBaseAuthentication.userStream() ,
-        builder: (BuildContext context , AsyncSnapshot<User> snap){
-            if(snap.hasData){
-              return Home();
-            }
-            else{
-              return  _screen;
-            }
+        stream: fireBaseAuthentication.userStream(),
+        builder: (BuildContext context, AsyncSnapshot<User> snap) {
+          if (snap.hasData) {
+            return Home();
+          } else {
+            return _screen;
+          }
         },
-      ), 
+      ),
       // home:_screen,
     );
   }
 
-  void isNewUser(  ) async {
+  void isNewUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // await Future.delayed(Duration(seconds: 4)); for welcom page if any
     bool seen = prefs.getBool('seen');
     if (seen == null || seen == false) {
       _screen = Onbording();
     } else {
-      _screen = Scaffold(body:Regester());//scaffold for snakebar when email is already exest 
+      _screen = Scaffold(
+          body: Regester()); //scaffold for snakebar when email is already exest
     }
     setState(() {});
   }

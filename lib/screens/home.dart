@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
     FirebaseAuthentication firebaseAuthentication = Provider.of<FirebaseAuthentication>(context );
     return Container(
       color:Colors.brown,
-      child:RaisedButton(
+      child:ElevatedButton(
         child: Text("log out"),
         onPressed: () async {
           await firebaseAuthentication.logOut();
