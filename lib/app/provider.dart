@@ -2,7 +2,7 @@ import 'package:Shop/app/setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'controllers_models/authentication/firebase_authentication.dart';
+import 'models/authentication/firebase_authentication.dart';
 
 class MyProvider extends StatelessWidget {
   @override
@@ -18,8 +18,6 @@ class MyProvider extends StatelessWidget {
         }
         return Center(child: 
         CircularProgressIndicator(),);
-        
-
       }
     );
   }

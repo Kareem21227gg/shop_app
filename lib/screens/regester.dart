@@ -1,4 +1,4 @@
-import 'package:Shop/app/controllers_models/authentication/firebase_authentication.dart';
+import 'package:Shop/app/models/authentication/firebase_authentication.dart';
 import 'package:Shop/utillities/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

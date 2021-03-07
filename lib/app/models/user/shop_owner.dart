@@ -8,5 +8,10 @@ class ShopOwner extends MyUser {
       String email,
       String phone,
       String gender})
-      : super(id, firstName, lastName, email, phone, gender);
+      : super( id: id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            gender: gender,
+            phone: phone);
 }

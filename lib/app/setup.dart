@@ -1,12 +1,11 @@
 import 'package:Shop/screens/home.dart';
 import 'package:Shop/screens/onbording.dart';
-import 'package:Shop/utillities/my_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Shop/screens/regester.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'controllers_models/authentication/firebase_authentication.dart';
+import 'models/authentication/firebase_authentication.dart';
 
 class SetUp extends StatefulWidget {
   @override
@@ -18,22 +17,9 @@ class _SetUpState extends State<SetUp> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context, listen: false);
+    FirebaseAuthentication fireBaseAuthentication = Provider.of<FirebaseAuthentication>(context, listen: false);
     isNewUser();
-    return MaterialApp(
-      color: MyColors.primaryColor,
-      debugShowCheckedModeBanner: false,
-
-      theme: ThemeData(
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-            ),
-          ),
-          primaryColor: MyColors.primaryColor,
-          primarySwatch: Colors.orange),
-      home: StreamBuilder<User>(
+    return StreamBuilder<User>(
         stream: fireBaseAuthentication.userStream(),
         builder: (BuildContext context, AsyncSnapshot<User> snap) {
           if (snap.hasData) {
@@ -41,10 +27,7 @@ class _SetUpState extends State<SetUp> {
           } else {
             return _screen;
           }
-        },
-      ),
-      // home:_screen,
-    );
+        });
   }
 
   void isNewUser() async {
