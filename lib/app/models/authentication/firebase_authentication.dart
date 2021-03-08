@@ -1,22 +1,23 @@
 import 'dart:async';
-
+import 'package:Shop/app/models/cloud/firebase_cloud.dart';
+import 'package:Shop/app/models/user/customer.dart';
 import 'package:Shop/app/models/user/my_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthentication {
-  FirebaseAuth _firebaseAuth;
-  FirebaseAuthentication() {
-    _firebaseAuth = FirebaseAuth.instance;
-  }
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FireBaseCloud _fireBaseCloud = FireBaseCloud();
+  MyUser user = Customer();
 
-  Future<User> login(
+  Future<MyUser> login(
       String email, String password, BuildContext context) async {
     try {
-      UserCredential userCredential = await _firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = currentUser();
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _sankeMasseg(
@@ -29,12 +30,14 @@ class FirebaseAuthentication {
     }
   }
 
-  Future<User> register(
+  Future<MyUser> register(
       String email, String password, BuildContext context) async {
     try {
-      UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      user = currentUser();
+      _fireBaseCloud.addUser(user);
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         _sankeMasseg(
@@ -49,8 +52,10 @@ class FirebaseAuthentication {
     return _firebaseAuth.userChanges();
   }
 
-  User currentUser() {
-    return _firebaseAuth.currentUser;
+  MyUser currentUser() {
+    return Customer(
+        id: _firebaseAuth.currentUser.uid,
+        email: _firebaseAuth.currentUser.email);
   }
 
   Future<bool> resetPassword(String email) {

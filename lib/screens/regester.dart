@@ -10,7 +10,9 @@ class Regester extends StatefulWidget {
 }
 
 class _RegesterState extends State<Regester> {
+  
   RegesterController regesterController = RegesterController();
+  
   @override
   void dispose() {
     regesterController.dispose();
@@ -20,10 +22,11 @@ class _RegesterState extends State<Regester> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context, listen: false);
+        Provider.of<FirebaseAuthentication>(context);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
+        leading: Icon(null),
         title: Text("Regester"),
       ),
       body: Center(

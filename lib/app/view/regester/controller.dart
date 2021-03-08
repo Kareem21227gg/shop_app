@@ -2,6 +2,7 @@ import 'package:Shop/app/models/authentication/firebase_authentication.dart';
 import 'package:flutter/material.dart';
 
 class RegesterController {
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   ValueNotifier alreadyhaveaccountNotifier = ValueNotifier<bool>(false);
