@@ -1,3 +1,4 @@
+import 'package:Shop/app/models/product/base_product.dart';
 import 'package:Shop/app/models/user/customer.dart';
 import 'package:Shop/app/models/user/my_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,8 +28,25 @@ class FireBaseCloud {
     
   }
 
+ 
+  Future<String> addProduct(BaseProduct product) async {
+    String uid;
+    await firestore.collection("/products").add(
+      {
+      }
+    ).then((value) {
+      uid = value.id;
+       firestore.doc(value.path).update({
+         "id":value.id,
+          "title":product.title,
+         "description" : product.description,
+        "price" : product.price,});
+         
+    });
+    return uid;
+  }
 
-  Future<String> addAllProductAsOwner(){
-    
+  Future<void> updateProduct(String url,String id) async {
+    await firestore.collection("/products").doc("/$id").update({"imageUrl": url });
   }
 }

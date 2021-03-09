@@ -9,8 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseAuthentication {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FireBaseCloud _fireBaseCloud = FireBaseCloud();
-  MyUser user = Customer();
-
+  MyUser user ;
+FirebaseAuthentication(){
+  user = currentUser();
+}
   Future<MyUser> login(
       String email, String password, BuildContext context) async {
     try {
