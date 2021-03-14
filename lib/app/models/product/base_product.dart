@@ -7,6 +7,7 @@ import 'package:Shop/app/models/tag/base_tag.dart';
   String title;
   String description;
   double price;
+  String imageUrl;
   BaseImage image;
   BaseCategory category;
   List<BaseTag> tags;
@@ -25,9 +26,10 @@ import 'package:Shop/app/models/tag/base_tag.dart';
     this.title = jsonObject['title'];
     this.description = jsonObject['description'];
     this.price = jsonObject['price'];
-    this.image = BaseImage.fromJson(jsonObject['image']);
-    this.category = BaseCategory.fromJson(jsonObject['categorys']);
-    List<Map<String, dynamic>> listMapTag = jsonObject['tags'];
-    this.tags = listMapTag.map((Map<String, dynamic>  jsonTag)=> BaseTag.fromJson(jsonTag)).toList();
+    this.imageUrl = jsonObject['imageUrl'];
+   // this.image = BaseImage.fromJson(jsonObject['image']);
+    // this.category = BaseCategory.fromJson(jsonObject['categorys']);
+    // List<Map<String, dynamic>> listMapTag = jsonObject['tags'];
+    // this.tags = listMapTag.map((Map<String, dynamic>  jsonTag)=> BaseTag.fromJson(jsonTag)).toList();
   }
 }

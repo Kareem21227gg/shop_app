@@ -21,15 +21,15 @@ class _SetUpState extends State<SetUp> {
   @override
   Widget build(BuildContext context) {
     setWidget();
-    FireBaseCloud fireBaseCloud = Provider.of<FireBaseCloud>(context);
+    FireBaseCloud fireBaseCloud = FireBaseCloud();
     FirebaseAuthentication fireBaseAuthentication =
-        Provider.of<FirebaseAuthentication>(context);
+        Provider.of<FirebaseAuthentication>(context,listen: false);
     return StreamBuilder<User>(
         stream: fireBaseAuthentication.userStream(),
         builder: (BuildContext context, AsyncSnapshot<User> snap) {
           if (snap.hasData) {
             return FutureBuilder(
-                future: fireBaseCloud.isOwner(fireBaseAuthentication.user),
+                future: fireBaseCloud.isOwner(fireBaseAuthentication.currentUser()),
                 builder: (BuildContext context, AsyncSnapshot snap) {
                   if (snap.hasData) {
                     if (snap.data) {
@@ -46,6 +46,8 @@ class _SetUpState extends State<SetUp> {
             return startScreen;
           }
         });
+    return(Container());
+    
   }
 
   Widget startScreen = Center(

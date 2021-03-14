@@ -10,9 +10,7 @@ class FirebaseAuthentication {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FireBaseCloud _fireBaseCloud = FireBaseCloud();
   MyUser user ;
-FirebaseAuthentication(){
-  user = currentUser();
-}
+
   Future<MyUser> login(
       String email, String password, BuildContext context) async {
     try {
@@ -56,8 +54,8 @@ FirebaseAuthentication(){
 
   MyUser currentUser() {
     return Customer(
-        id: _firebaseAuth.currentUser.uid,
-        email: _firebaseAuth.currentUser.email);
+        id: _firebaseAuth.currentUser.uid == null ? null:_firebaseAuth.currentUser.uid,
+        email: _firebaseAuth.currentUser.email  == null ? null:_firebaseAuth.currentUser.email);
   }
 
   Future<bool> resetPassword(String email) {

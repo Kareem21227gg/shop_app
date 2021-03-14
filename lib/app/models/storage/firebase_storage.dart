@@ -12,7 +12,6 @@ Future<String> upLoadFile(File file , String id) async {
    var url ;
    await upLoadTask.whenComplete(()async {
      url = await ref.getDownloadURL();
-     print("-------$url--------");
    } );
   return url;
 }

@@ -14,39 +14,54 @@ class FireBaseCloud {
       "email": user.email,
     });
   }
-
-  Future<void> readUser(MyUser user) async {
-
-  }
-
-  Future<bool> isOwner(MyUser user) async {
-     String id ="xhGCS3bFGrXTJPuYzUTW6bdP82v2"; //await firestore.collection("/owner").get().then((value)=> value.docs.first.data()["id"]);
-    if(id == user.id){
-      return true;
+Future<void> test ()async {
+  
+}
+  Future<BaseProduct> readLastProduct() async {
+    try {
+     // await firestore.collection("/products").get(GetOptions(source:Source. ));
+      QueryDocumentSnapshot x =
+          await firestore.collection("/products").get().then((value) {
+          return value.docs.first;
+      });
+      
+      return BaseProduct.fromJson(x.data());
+    } catch (e) {
+      print(e);
+      return BaseProduct();
     }
-    return false;
     
   }
 
- 
+  Future<void> readUser(MyUser user) async {}
+
+  Future<bool> isOwner(MyUser user) async {
+    String id =
+        "xhGCS3bFGrXTJPuYzUTW6bdP82v2"; //await firestore.collection("/owner").get().then((value)=> value.docs.first.data()["id"]);
+    if (id == user.id) {
+      return true;
+    }
+    return false;
+  }
+
   Future<String> addProduct(BaseProduct product) async {
     String uid;
-    await firestore.collection("/products").add(
-      {
-      }
-    ).then((value) {
+    await firestore.collection("/products").add({}).then((value) {
       uid = value.id;
-       firestore.doc(value.path).update({
-         "id":value.id,
-          "title":product.title,
-         "description" : product.description,
-        "price" : product.price,});
-         
+      firestore.doc(value.path).update({
+        "id": value.id,
+        "title": product.title,
+        "description": product.description,
+        "price": product.price,
+      });
     });
     return uid;
   }
 
-  Future<void> updateProduct(String url,String id) async {
-    await firestore.collection("/products").doc("/$id").update({"imageUrl": url });
+  Future<void> updateProduct(String url, String id) async {
+    await firestore
+        .collection("/products")
+        .doc("/$id")
+        .update({"imageUrl": url});
   }
 }

@@ -14,16 +14,24 @@ class AddProductController {
   FireBaseCloud cloud = FireBaseCloud();
   ImagePicker picker = ImagePicker();
   File image ;
-FireBaseStorage storage = FireBaseStorage();
+  FireBaseStorage storage = FireBaseStorage();
+  ValueNotifier<bool> isProgress =ValueNotifier<bool>(false);
+  ValueNotifier<double> progress=ValueNotifier<double>(0);
+  ValueNotifier<bool> imageprogress  =ValueNotifier<bool>(false);
 
-ValueNotifier<bool> isProgress =ValueNotifier<bool>(false);
-ValueNotifier<double> progress=ValueNotifier<double>(100);
+
   Future<File> imagePick() async {
-    var pickedImage = await picker.getImage(source: ImageSource.camera);
+    imageprogress.value=true;
+    var pickedImage = await picker.getImage(source: ImageSource.gallery);
   image= File(pickedImage.path);
+  imageprogress.value=false;
   return image;
   }
+
+
   void dispose() {
+    imageprogress.dispose();
+    progress.dispose();
     isProgress.dispose();
     progress.dispose();
     titleController.dispose();
@@ -31,19 +39,24 @@ ValueNotifier<double> progress=ValueNotifier<double>(100);
     priceController.dispose();
   }
 
-  void addProduct() async {
+  void addProduct(BuildContext context) async {
     isProgress.value=true;
-    BaseProduct product = BaseProduct(
-        title: titleController.text,
-        description: describtionController.text,
-        price: double.parse(priceController.text));
-        progress.value = 90;
-   String id =  await cloud.addProduct(product);
-   progress.value = 60;
-    String downloadUrl = await storage.upLoadFile(image,id );
-    progress.value = 30;
-  await cloud.updateProduct(downloadUrl, id);
-  progress.value = 0;
+    try {
+      BaseProduct product = BaseProduct(
+          title: titleController.text,
+          description: describtionController.text,
+          price: double.parse(priceController.text));
+          progress.value = 0.2;
+         String id =  await cloud.addProduct(product);
+         progress.value = 0.7;
+      String downloadUrl = await storage.upLoadFile(image,id );
+      progress.value = 0.9;
+        await cloud.updateProduct(downloadUrl, id);
+        progress.value = 1;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("added successfully")));
+    } on Exception catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("something won't work try again later the error is : $e")));
+    }
   isProgress.value=false;
   }
 }
